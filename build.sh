@@ -66,29 +66,29 @@ mkzip1(){
 	cd $source
 }
 
-build2(){
-	export KBUILD_BUILD_USER="G010R0KU"
-	export KBUILD_BUILD_HOST="MarisaKernel"
-args+="LOCALVERSION=-${middlever}-${date} "
-	make $args ${device1}_defconfig&&make $args
-	if [ $? -ne 0 ]; then
-    terminate "Error while building for ${device1}!"
-    fi
-	mkzip2
-	tg_notify "Finish building ${device1}!"
-}
-
-mkzip2(){
-	mv -f ~/src/out/arch/arm64/boot/Image-dtb ~/src/anykernel3
-	mv -f ~/src/out/arch/arm64/boot/dtbo.img ~/src/anykernel3
-	cd ~/src/anykernel3
-	zip -r "MarisaKernel-${device1}-$middlever-$date.zip" *
-	mv -f "MarisaKernel-${device1}-$middlever-$date.zip" ${HOME}
-	cd ${HOME}
-	log "Finish making zip for ${device1}!"
-	tg_upload "MarisaKernel-${device1}-$middlever-$date.zip"
-	cd $source
-}
+# build2(){
+# 	export KBUILD_BUILD_USER="G010R0KU"
+# 	export KBUILD_BUILD_HOST="MarisaKernel"
+# args+="LOCALVERSION=-${middlever}-${date} "
+# 	make $args ${device1}_defconfig&&make $args
+# 	if [ $? -ne 0 ]; then
+#     terminate "Error while building for ${device1}!"
+#     fi
+# 	mkzip2
+# 	tg_notify "Finish building ${device1}!"
+# }
+# 
+# mkzip2(){
+# 	mv -f ~/src/out/arch/arm64/boot/Image-dtb ~/src/anykernel3
+# 	mv -f ~/src/out/arch/arm64/boot/dtbo.img ~/src/anykernel3
+# 	cd ~/src/anykernel3
+# 	zip -r "MarisaKernel-${device1}-$middlever-$date.zip" *
+# 	mv -f "MarisaKernel-${device1}-$middlever-$date.zip" ${HOME}
+# 	cd ${HOME}
+# 	log "Finish making zip for ${device1}!"
+# 	tg_upload "MarisaKernel-${device1}-$middlever-$date.zip"
+# 	cd $source
+# }
 
 tg_notify "LOG: START BUILDING!"
 cd /drone/src
@@ -98,8 +98,8 @@ git submodule update
 clean
 git reset --hard
 build1
-cd /drone/src
-build2
+# cd /drone/src
+# build2
 cd /drone/src
 
 log "Build finished for #${DRONE_BUILD_NUMBER} ( ${date} )."
